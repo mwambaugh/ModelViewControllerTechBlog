@@ -48,8 +48,14 @@ router.get("/edit/:id", async (req, res) => {
     res.status(500).json(err);
   }
 });
+
 router.get("/login", (req, res) => {
   res.render("login")
 });
 
+router.get("/dashboard", (req, res) => {
+  res.render("dashboard")
+});
+
 module.exports = router;
+
