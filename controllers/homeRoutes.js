@@ -24,6 +24,7 @@ router.get("/", async (req, res) => {
   }
 });
 
+//edit post
 router.get("/edit/:id", async (req, res) => {
   try {
     const postData = await Post.findByPk(req.params.id, {
