@@ -1,4 +1,3 @@
-
 <section>
   <h2>Create New Post</h2>
 
@@ -8,8 +7,8 @@
       <input type="text" id="post-title" name="post-title" />
     </div>
     <div>
-      <label for="content">Text</label>
-      <textarea id="content" name="content"></textarea>
+      <label for="post-content">Content</label>
+      <textarea id="post-content" name="post-content"></textarea>
     </div>
     <button type="submit" class="btn">Create</button>
   </form>
@@ -17,15 +16,14 @@
 {{#if posts.length}}
   <section>
     <h2>Your Posts</h2>
-    <ol>
+    <ul>
       {{#each posts as |post|}}
         <li>
-          {{!-- {{> post-info post}} --}}
-          <a href="/dashboard/edit/{{post.id}}" class="edit-link">Edit Post</a>
+          <a href="/edit/{{post.id}}" class="edit-link">Edit Post</a>
+          <h3>{{post.title}}</h3>
+          <p>{{post.content}}</p>
         </li>
       {{/each}}
-    </ol>
+    </ul>
   </section>
 {{/if}}
-
-<script src="./../public/js/new-post.js"></script>

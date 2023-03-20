@@ -1,7 +1,25 @@
 const router = require("express").Router();
 const { User } = require("../../models");
 
-router.post("/", async (req, res) => {
+
+router.get("/:id", (req, res) => {
+  User.findByPk(req.params.id,{include:[Post, Comment]})
+    .then(dbUser => {
+      res.json(dbUser);
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).json({ msg: "an error occured", err });
+    });
+});
+
+router.get("/logout",(req,res)=>{
+  req.session.destroy();
+  res.redirect('/');
+})
+
+
+router.post("/login", async (req, res) => {
   try {
     const userData = await User.create(req.body);
 

@@ -24,7 +24,20 @@ router.get("/", async (req, res) => {
   }
 });
 
-//edit post
+router.get("/dashboard",(req,res)=>{
+  if(!req.session.user) {
+      return res.redirect('/login')
+  }
+  User.findByPk(req.session.user.id, {
+      include: [homepage, Comment]
+  }).then(userData => {
+      const hbsData = userData.get({plain:true})
+      hbsData.loggedIn = req.session.user?true:false
+      res.render("dashboard", hbsData)
+  })
+})
+
+// edit post
 router.get("/edit/:id", async (req, res) => {
   try {
     const postData = await Post.findByPk(req.params.id, {
@@ -38,7 +51,6 @@ router.get("/edit/:id", async (req, res) => {
         },
       ],
     });
-
     const post = postData.get({ plain: true });
     console.log(post);
     res.render("edit-post", {
@@ -50,6 +62,32 @@ router.get("/edit/:id", async (req, res) => {
   }
 });
 
+//newPost
+router.get("/post/:id", async (req, res) => {
+  try {
+    const postData = await Post.findByPk(req.params.id, {
+      include: [
+        {
+          model: User,
+          attributes: ["name"],
+        },
+        {
+          model: Post,
+        },
+      ],
+    });
+    const post = postData.get({ plain: true });
+    console.log(post);
+    res.render("new-post", {
+      post,
+      logged_in: req.session.logged_in,
+    });
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+//end NewPost
+
 router.get('/dashboard', withAuth, async (req, res) => {
   try {
     // Find the logged in user based on the session ID
@@ -57,9 +95,7 @@ router.get('/dashboard', withAuth, async (req, res) => {
       attributes: { exclude: ['password'] },
       include: [{ model: Post }],
     });
-
     const user = userData.get({ plain: true });
-
     res.render('dashboard', {
       ...user,
       logged_in: true
@@ -69,19 +105,17 @@ router.get('/dashboard', withAuth, async (req, res) => {
   }
 });
 
-router.get('/login', (req, res) => {
-  // If the user is already logged in, redirect the request to another route
-  if (req.session.logged_in) {
-    res.redirect('/dashboard');
-    return;
+router.get("/login",(req,res)=>{
+  if(req.session.logged_in){
+      return res.redirect("/dashboard")
   }
-
-  res.render('login');
+  res.render("login")
 });
 
-router.get("/dashboard", (req, res) => {
-  res.render("dashboard")
-});
+
+router.get('/logout', (req, res) => {
+  res.render('homepage');
+})
 
 module.exports = router;
 
