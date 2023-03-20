@@ -24,19 +24,6 @@ router.get("/", async (req, res) => {
   }
 });
 
-router.get("/dashboard",(req,res)=>{
-  if(!req.session.user) {
-      return res.redirect('/login')
-  }
-  User.findByPk(req.session.user.id, {
-      include: [homepage, Comment]
-  }).then(userData => {
-      const hbsData = userData.get({plain:true})
-      hbsData.loggedIn = req.session.user?true:false
-      res.render("dashboard", hbsData)
-  })
-})
-
 // edit post
 router.get("/edit/:id", async (req, res) => {
   try {
@@ -105,9 +92,10 @@ router.get('/dashboard', withAuth, async (req, res) => {
   }
 });
 
-router.get("/login",(req,res)=>{
-  if(req.session.logged_in){
-      return res.redirect("/dashboard")
+router.get("/login", (req, res) => {
+  if (req.session.logged_in) {
+    res.redirect("/dashboard")
+    return;
   }
   res.render("login")
 });

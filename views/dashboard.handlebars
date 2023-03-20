@@ -16,16 +16,20 @@
 </section>
 {{#if posts.length}}
   <section>
-    <h2>Your Posts</h2>
+    <h2>Posts</h2>
     <ol>
       {{#each posts as |post|}}
         <li>
           {{!-- {{> post-info post}} --}}
-          <a href="/dashboard/edit/{{post.id}}" class="edit-link">Edit Post</a>
+          <li>
+          <h3>{{post.title}}</h3>
+          <p>{{post.content}}</p>
+            <a href="/edit/{{post.id}}" class="edit-post">Edit Post</a>
+        </li>
         </li>
       {{/each}}
     </ol>
   </section>
 {{/if}}
 
-<script src="./../public/js/new-post.js"></script>
+<script src="/js/new-post.js"></script>

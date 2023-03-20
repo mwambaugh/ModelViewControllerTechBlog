@@ -3,7 +3,7 @@ const { User } = require("../../models");
 
 
 router.get("/:id", (req, res) => {
-  User.findByPk(req.params.id,{include:[Post, Comment]})
+  User.findByPk(req.params.id, { include: [Post, Comment] })
     .then(dbUser => {
       res.json(dbUser);
     })
@@ -13,13 +13,8 @@ router.get("/:id", (req, res) => {
     });
 });
 
-router.get("/logout",(req,res)=>{
-  req.session.destroy();
-  res.redirect('/');
-})
 
-
-router.post("/login", async (req, res) => {
+router.post("/signup", async (req, res) => {
   try {
     const userData = await User.create(req.body);
 
