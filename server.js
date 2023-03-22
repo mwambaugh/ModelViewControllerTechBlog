@@ -11,7 +11,7 @@ const helpers = require('./utils/helpers');
 // const Post = require('./models/Post');
 // const Comment = require('./models/Comment');
 
-const sequelize = require('./config/connection');
+const sequelize = require('./config/connection'); 
 const SequelizeStore = require('connect-session-sequelize')(session.Store);
 
 const app = express();
